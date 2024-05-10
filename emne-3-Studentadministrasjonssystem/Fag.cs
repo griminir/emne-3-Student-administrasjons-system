@@ -8,25 +8,15 @@ namespace emne_3_Studentadministrasjonssystem
 {
     internal class Fag (int fagkode, string fagnavn, int studiepoeng)
     {
-        private int _fagkode = fagkode;
+        internal int _fagkode = fagkode;
         private string _fagnavn = fagnavn;
-        private int _studiepoeng = studiepoeng;
+        internal int _studiepoeng = studiepoeng;
 
         public void SkrivUtInfo()
         {
             Console.WriteLine($"fagkode: {_fagkode}");
             Console.WriteLine($"fagnavn: {_fagnavn}");
             Console.WriteLine($"Studiepoeng: {_studiepoeng}");
-        }
-
-        public int GetFagKode()
-        {
-            return _fagkode;
-        }
-
-        public int GetStudiePoeng()
-        {
-            return _studiepoeng;
         }
     }
 }

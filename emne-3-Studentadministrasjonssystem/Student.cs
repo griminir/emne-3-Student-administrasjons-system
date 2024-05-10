@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
+using System.Numerics;
 using System.Reflection.Metadata.Ecma335;
 using System.Runtime.InteropServices;
 using System.Text;
@@ -15,46 +16,74 @@ namespace emne_3_Studentadministrasjonssystem
         private int _age = age;
         private string _studieProgram = studieProgram;
         private int _studentId = StudentId;
-        private int[] _fag = [];
-        private int[] _karakterer = [];
+        private List<int> _fag = new List<int>();
         private int _totaleStudiePoeng;
+        private List<Karakterer> _grades = new List<Karakterer>();
 
-        public void SkrivUtInfo()
+        private void SkrivUtInfo()
         {
             Console.WriteLine($"name: {_name}");
             Console.WriteLine($"age: {_age}");
             Console.WriteLine($"studieProgram: {_studieProgram}");
             Console.WriteLine($"studentId: {_studentId}");
-            Console.WriteLine($"fag: {_fag[0]}, {_fag[1]}, {_fag[2]}"); // loop? 
+            Console.WriteLine($"fag: {Fagloop()}");
             Console.WriteLine($"gjennomsnitt: {Gjennomsnitt()}");
             Console.WriteLine($"Studiepoeng: {_totaleStudiePoeng}");
         }
 
-        public string GetStudent()
+        private void GetStudentGrades(Karakterer grade1, Karakterer grade2, Karakterer grade3)
         {
-            return _name;
+            _grades.Add(grade1);
+            _grades.Add(grade2);
+            _grades.Add(grade3);
         }
 
-        public void LeggTilFag(int førstefag, int andrefag, int tredjefag)
+        private void LeggTilFag()
         {
-            _fag = new int[] { førstefag, andrefag, tredjefag };
+            foreach (var Code in _grades)
+            {
+                _fag.Add(Code._fagkode);
+            }
         }
 
-        public void GetStudentGrades(int grade1, int grade2, int grade3)
+        private string Fagloop()
         {
-            _karakterer = new int[] { grade1, grade2, grade3 };
+            string fag = "";
+            foreach (var f in _fag)
+            {
+                fag += f + " ";
+            }
+            return fag;
         }
 
         private float Gjennomsnitt()
         {
-            float gjennomsnitt = _karakterer.Sum();
-            return gjennomsnitt / _karakterer.Length;
+            float gjennomsnitt = 0;
+            foreach (var grade in _grades)
+            {
+                gjennomsnitt += grade._karakter;
+            }
+
+            return gjennomsnitt/ _grades.Count;
         }
 
-        public void TotaltStudiePoeng(int poeng1, int poeng2, int poeng3)
+        private void TotaltStudiePoeng()
         {
-            int sum = poeng1 + poeng2 + poeng3;
+            int sum = 0;
+            foreach (var poeng in _grades)
+            {
+                sum += poeng._studiepoeng;
+            }
             _totaleStudiePoeng = sum;
+        }
+
+        public void run(Karakterer grade1, Karakterer grade2, Karakterer grade3)
+        {
+            GetStudentGrades(grade1, grade2, grade3);
+            LeggTilFag();
+            TotaltStudiePoeng();
+            SkrivUtInfo();
+            Console.WriteLine();
         }
     }
 }
